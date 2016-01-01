@@ -4,7 +4,10 @@ var webpack = require('webpack');
 
 module.exports = {
   context: path.resolve('app'),
-  entry: ['babel-polyfill', './app'],
+  entry: {
+    app: './app',
+    vendors: ['jquery', 'bootstrap', 'lodash', 'babel-polyfill', 'angular', 'angular-ui-router']
+  },
   output: {
     path: path.resolve('build/js'),
     publicPath: path.resolve('/public/js'),
@@ -18,7 +21,7 @@ module.exports = {
   }), new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery"
-  })],
+  }),  new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')],
   module: {
     preLoaders: [{
       test: /\.es6$/,
@@ -34,16 +37,19 @@ module.exports = {
       {
         test: /\.es6$/,
         exclude: /node_modules/,
+        include: path.resolve(__dirname, 'app'),
         loader: "babel-loader"
       }, {
         test: /\.scss$/,
         exclude: /node_modules/,
+        include: path.resolve(__dirname, 'app'),
         loader: 'style-loader!css-loader!autoprefixer-loader!sass-loader'
       }, {
         test: /\.css$/,
-        loader: 'style-loader!css-loader!autoprefixer-loader'
+        loader: 'style-loader!css-loader'
       }, {
-        test: /\.(png|jpg|woff|woff2|eot|ttf|svg)/, loader: 'url-loader?limit=10000'
+        test: /\.(png|jpg|woff|woff2|eot|ttf|svg)/,
+        loader: 'url-loader?limit=10000'
       }]
   },
   resolve: {

@@ -11,7 +11,7 @@ function loginConfig($stateProvider) {
       `<div class="container">
         <div class="col-lg-offset-4 col-lg-4">
           <page-header>
-            Login!
+            Login
           </page-header>
 
           <form name="loginForm" novalidate ng-submit="login.login()">
